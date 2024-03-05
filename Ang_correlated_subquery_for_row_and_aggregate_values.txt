@@ -1,0 +1,23 @@
+-- using correlated subquery in Select clause to add group aggregates to row data
+
+
+select pub_id, 'row data', (price*sales) rev 
+from titles
+union
+select pub_id, 'group data', sum(price*sales) rev 
+from titles 
+group by pub_id 
+order by pub_id;
+
+
+column group_rev format $999,999,999.99
+column rev format $999,999,999.99
+
+
+SELECT pub_id, 'row data', (price*sales) rev, ' group data ',
+  		(select sum(price*sales)    
+  		 from titles innerT 
+  	 	 where innerT.pub_id = outerT.pub_id
+  	 	 group by pub_id) group_rev
+FROM Titles outerT
+ORDER by pub_id ;
