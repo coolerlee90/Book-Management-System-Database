@@ -1,0 +1,34 @@
+
+-- subqueries
+
+select a.au_id, a.fname, a.lname, length(a.fname||a.lname) as length
+  from authors a
+  where length (a.fname || a.lname) = (select max (length(fname ||lname)) from Authors);
+
+
+
+select 'The max revenue for ' || pub_id || 'is: ', (price * Sales) as revenue
+  from titles t
+  where (pub_id, price*sales) = (Select pub_id, max(price*sales)
+  					From titles ti
+  					where t.pub_id = ti.pub_id
+  					group by ti.pub_id)
+* order by 1 desc
+
+                                                                                                        
+
+column revenue format $999,999,999.99
+
+
+                                                                                                    
+
+
+
+select 'The max revenue for ' || pub_id || ' is: ' as "Max Rev for Pub_ids", (price * Sales) as revenue
+  from titles t
+  where (pub_id, price*sales) = (Select pub_id, max(price*sales)
+  					From titles ti
+  					where t.pub_id = ti.pub_id
+  					group by ti.pub_id)
+* order by 2 desc
+
